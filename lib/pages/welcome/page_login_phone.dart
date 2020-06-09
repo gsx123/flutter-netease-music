@@ -43,8 +43,8 @@ class _PageLoginWithPhoneState extends State<PageLoginWithPhone> {
         ),
       ),
       body: Loader<_InputModel>(
-        loadTask: () =>
-            WelcomeRepository.getRegions().then((value) => Result.value(_InputModel(value, _phoneInputController))),
+        loadTask: () => WelcomeRepository.getRegions().then(
+            (value) => Result.value(_InputModel(value, _phoneInputController))),
         builder: (context, data) {
           return ScopedModel<_InputModel>(
             model: data,
@@ -80,7 +80,8 @@ class _InputModel extends Model {
 
   _InputModel(this.flags, this.phoneInputController) {
     final countryCode = window.locale.countryCode;
-    final region = flags.firstWhere((region) => region.code == countryCode) ?? flags[0];
+    final region =
+        flags.firstWhere((region) => region.code == countryCode) ?? flags[0];
     _region = region;
   }
 
@@ -111,11 +112,12 @@ class _PhoneInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = Theme.of(context).textTheme.bodyText2.copyWith(
+    final style = Theme.of(context).textTheme.body2.copyWith(
           fontSize: 16,
           color: _textColor(context),
         );
-    final inputModel = ScopedModel.of<_InputModel>(context, rebuildOnChange: true);
+    final inputModel =
+        ScopedModel.of<_InputModel>(context, rebuildOnChange: true);
     return DefaultTextStyle(
       style: style,
       child: TextField(
@@ -130,14 +132,17 @@ class _PhoneInput extends StatelessWidget {
           prefixIcon: InkWell(
             onTap: () async {
               final region = await showDialog<RegionFlag>(
-                  context: context, builder: (context) => _RegionSelectionDialog(regions: inputModel.flags));
+                  context: context,
+                  builder: (context) =>
+                      _RegionSelectionDialog(regions: inputModel.flags));
               if (region != null) {
                 inputModel.region = region;
               }
             },
             child: Padding(
               padding: EdgeInsets.all(12),
-              child: Text(inputModel.region.emoji + " " + inputModel.region.dialCode),
+              child: Text(
+                  inputModel.region.emoji + " " + inputModel.region.dialCode),
             ),
           ),
         ),
@@ -149,7 +154,8 @@ class _PhoneInput extends StatelessWidget {
 class _RegionSelectionDialog extends StatelessWidget {
   final List<RegionFlag> regions;
 
-  const _RegionSelectionDialog({Key key, @required this.regions}) : super(key: key);
+  const _RegionSelectionDialog({Key key, @required this.regions})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +217,7 @@ class _ButtonNextStep extends StatelessWidget {
     return RaisedButton(
       color: Theme.of(context).primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      textColor: Theme.of(context).primaryTextTheme.bodyText2.color,
+      textColor: Theme.of(context).primaryTextTheme.body2.color,
       child: Text('下一步'),
       onPressed: () async {
         _next(context);

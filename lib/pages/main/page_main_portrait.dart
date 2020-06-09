@@ -5,12 +5,14 @@ class _PortraitMainPage extends StatefulWidget {
   State<StatefulWidget> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<_PortraitMainPage> with SingleTickerProviderStateMixin {
+class _MainPageState extends State<_PortraitMainPage>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  ProxyAnimation transitionAnimation = ProxyAnimation(kAlwaysDismissedAnimation);
+  ProxyAnimation transitionAnimation =
+      ProxyAnimation(kAlwaysDismissedAnimation);
 
   @override
   void initState() {
@@ -43,7 +45,8 @@ class _MainPageState extends State<_PortraitMainPage> with SingleTickerProviderS
           width: 128,
           child: TabBar(
             controller: _tabController,
-            indicator: UnderlineTabIndicator(insets: EdgeInsets.only(bottom: 4)),
+            indicator:
+                UnderlineTabIndicator(insets: EdgeInsets.only(bottom: 4)),
             indicatorSize: TabBarIndicatorSize.label,
             tabs: <Widget>[
               Tab(child: Icon(Icons.music_note)),
@@ -56,7 +59,8 @@ class _MainPageState extends State<_PortraitMainPage> with SingleTickerProviderS
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Navigator.push(context, NeteaseSearchPageRoute(transitionAnimation));
+              Navigator.push(
+                  context, NeteaseSearchPageRoute(transitionAnimation));
             },
             icon: Icon(Icons.search),
           )
@@ -87,7 +91,10 @@ class _UserInfo extends StatelessWidget {
       currentAccountPicture: InkResponse(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => UserDetailPage(userId: UserAccount.of(context).userId)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      UserDetailPage(userId: UserAccount.of(context).userId)));
         },
         child: CircleAvatar(
           backgroundImage: CachedImage(profile["avatarUrl"]),
@@ -105,7 +112,8 @@ class _UserInfo extends StatelessWidget {
             ),
             tooltip: "退出登陆",
             onPressed: () async {
-              if (await showConfirmDialog(context, Text('确认退出登录吗？'), positiveLabel: '退出登录')) {
+              if (await showConfirmDialog(context, Text('确认退出登录吗？'),
+                  positiveLabel: '退出登录')) {
                 UserAccount.of(context, rebuildOnChange: false).logout();
               }
             },
@@ -123,7 +131,8 @@ class _UserInfo extends StatelessWidget {
       child: Container(
         constraints: BoxConstraints.expand(),
         child: DefaultTextStyle(
-          style: Theme.of(context).primaryTextTheme.caption.copyWith(fontSize: 14),
+          style:
+              Theme.of(context).primaryTextTheme.caption.copyWith(fontSize: 14),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -133,13 +142,18 @@ class _UserInfo extends StatelessWidget {
                 SizedBox(height: 8),
                 FlatButton(
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Theme.of(context).primaryTextTheme.bodyText2.color.withOpacity(0.3)),
+                        side: BorderSide(
+                            color: Theme.of(context)
+                                .primaryTextTheme
+                                .body2
+                                .color
+                                .withOpacity(0.3)),
                         borderRadius: BorderRadius.circular(20)),
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     onPressed: () {
                       Navigator.pushNamed(context, pageLogin);
                     },
-                    textColor: Theme.of(context).primaryTextTheme.bodyText2.color,
+                    textColor: Theme.of(context).primaryTextTheme.body2.color,
                     child: Text("立即登陆"))
               ],
             ),

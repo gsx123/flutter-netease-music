@@ -8,6 +8,7 @@ import 'package:quiet/material/app.dart';
 import 'package:quiet/pages/account/account.dart';
 import 'package:quiet/pages/splash/page_splash.dart';
 import 'package:quiet/repository/netease.dart';
+import 'package:quiet/repository/ted.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +21,7 @@ void main() {
   debugDefaultTargetPlatformOverride = TargetPlatform.android;
   WidgetsFlutterBinding.ensureInitialized();
   neteaseRepository = NeteaseRepository();
+  tedRepository = TedRepository();
   api.debugPrint = debugPrint;
   runApp(PageSplash(
     futures: [
@@ -42,7 +44,7 @@ void playerBackgroundService() {
   neteaseRepository = NeteaseRepository();
   runBackgroundService(
     imageLoadInterceptor: BackgroundInterceptors.loadImageInterceptor,
-    playUriInterceptor: BackgroundInterceptors.playUriInterceptor,
+    playUriInterceptor: BackgroundInterceptors.playUriInterceptorTED,
     playQueueInterceptor: QuietPlayQueueInterceptor(),
   );
 }
@@ -52,13 +54,15 @@ class MyApp extends StatelessWidget {
 
   final Map user;
 
-  const MyApp({Key key, @required this.setting, @required this.user}) : super(key: key);
+  const MyApp({Key key, @required this.setting, @required this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ScopedModel<Settings>(
       model: setting,
-      child: ScopedModelDescendant<Settings>(builder: (context, child, setting) {
+      child:
+          ScopedModelDescendant<Settings>(builder: (context, child, setting) {
         return Netease(
           user: user,
           child: Quiet(

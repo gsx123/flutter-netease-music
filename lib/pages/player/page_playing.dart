@@ -91,7 +91,8 @@ class PlayerControllerBar extends StatelessWidget {
         height: 56,
         width: 56,
         child: Center(
-          child: Container(height: 24, width: 24, child: CircularProgressIndicator()),
+          child: Container(
+              height: 24, width: 24, child: CircularProgressIndicator()),
         ),
       ),
     );
@@ -183,7 +184,8 @@ class PlayingOperationBar extends StatelessWidget {
               }
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return CommentPage(
-                  threadId: CommentThreadId(music.id, CommentType.song, payload: CommentThreadPayload.music(music)),
+                  threadId: CommentThreadId(music.id, CommentType.song,
+                      payload: CommentThreadPayload.music(music)),
                 );
               }));
             }),
@@ -216,8 +218,10 @@ class _CenterSectionState extends State<_CenterSection> {
   Widget build(BuildContext context) {
     return Expanded(
       child: AnimatedCrossFade(
-        crossFadeState: _showLyric ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-        layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild, Key bottomChildKey) {
+        crossFadeState:
+            _showLyric ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild,
+            Key bottomChildKey) {
           return Stack(
             overflow: Overflow.visible,
             children: <Widget>[
@@ -259,15 +263,20 @@ class PlayingLyricView extends StatelessWidget {
 
   final Music music;
 
-  const PlayingLyricView({Key key, this.onTap, @required this.music}) : super(key: key);
+  const PlayingLyricView({Key key, this.onTap, @required this.music})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ProgressTrackingContainer(builder: _buildLyric, player: context.player);
+    return ProgressTrackingContainer(
+        builder: _buildLyric, player: context.player);
   }
 
   Widget _buildLyric(BuildContext context) {
-    TextStyle style = Theme.of(context).textTheme.bodyText2.copyWith(height: 2, fontSize: 16, color: Colors.white);
+    TextStyle style = Theme.of(context)
+        .textTheme
+        .body2
+        .copyWith(height: 2, fontSize: 16, color: Colors.white);
     final playingLyric = PlayingLyric.of(context);
 
     if (playingLyric.hasLyric) {
@@ -276,7 +285,8 @@ class PlayingLyricView extends StatelessWidget {
         //歌词顶部与尾部半透明显示
         return ShaderMask(
           shaderCallback: (rect) {
-            return ui.Gradient.linear(Offset(rect.width / 2, 0), Offset(rect.width / 2, constraints.maxHeight), [
+            return ui.Gradient.linear(Offset(rect.width / 2, 0),
+                Offset(rect.width / 2, constraints.maxHeight), [
               const Color(0x00FFFFFF),
               style.color,
               style.color,
@@ -296,7 +306,11 @@ class PlayingLyricView extends StatelessWidget {
               highlight: style.color,
               position: context.playbackState.positionWithOffset,
               onTap: onTap,
-              size: Size(constraints.maxWidth, constraints.maxHeight == double.infinity ? 0 : constraints.maxHeight),
+              size: Size(
+                  constraints.maxWidth,
+                  constraints.maxHeight == double.infinity
+                      ? 0
+                      : constraints.maxHeight),
               playing: context.playbackState.isPlaying,
             ),
           ),
@@ -356,7 +370,10 @@ class PlayingTitle extends StatelessWidget {
                     constraints: BoxConstraints(maxWidth: 200),
                     child: Text(
                       music.artistString,
-                      style: Theme.of(context).primaryTextTheme.bodyText2.copyWith(fontSize: 13),
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .body2
+                          .copyWith(fontSize: 13),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -383,9 +400,16 @@ class PlayingTitle extends StatelessWidget {
             ),
           ),
           LandscapeWidgetSwitcher(landscape: (context) {
-            return CloseButton(onPressed: () {
-              context.rootNavigator.maybePop();
-            });
+            IconButton(
+              icon: const Icon(Icons.close),
+              tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+              onPressed: () {
+                context.rootNavigator.maybePop();
+              },
+            );
+            // return CloseButton(onPressed: () {
+            //   context.rootNavigator.maybePop();
+            // });
           })
         ],
       ),

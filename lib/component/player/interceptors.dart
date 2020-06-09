@@ -11,7 +11,8 @@ import 'player.dart';
 
 class BackgroundInterceptors {
   // 获取播放地址
-  static Future<String> playUriInterceptor(String mediaId, String fallbackUri) async {
+  static Future<String> playUriInterceptor(
+      String mediaId, String fallbackUri) async {
     final result = await neteaseRepository.getPlayUrl(int.parse(mediaId));
     if (result.isError) {
       return fallbackUri;
@@ -21,8 +22,15 @@ class BackgroundInterceptors {
     return result.asValue.value.replaceFirst("http://", "https://");
   }
 
+  static Future<String> playUriInterceptorTED(
+      String mediaId, String fallbackUri) async {
+    /// some devices do not support http request.
+    return fallbackUri;
+  }
+
   static Future<Uint8List> loadImageInterceptor(MusicMetadata metadata) async {
-    final ImageStream stream = CachedImage(metadata.iconUri.toString()).resolve(ImageConfiguration(
+    final ImageStream stream =
+        CachedImage(metadata.iconUri.toString()).resolve(ImageConfiguration(
       size: const Size(150, 150),
       devicePixelRatio: WidgetsBinding.instance.window.devicePixelRatio,
     ));
@@ -43,7 +51,8 @@ class BackgroundInterceptors {
 
 class QuietPlayQueueInterceptor extends PlayQueueInterceptor {
   @override
-  Future<List<MusicMetadata>> fetchMoreMusic(BackgroundPlayQueue queue, PlayMode playMode) async {
+  Future<List<MusicMetadata>> fetchMoreMusic(
+      BackgroundPlayQueue queue, PlayMode playMode) async {
     if (queue.queueId == FM_PLAY_QUEUE_ID) {
       final musics = await neteaseRepository.getPersonalFmMusics();
       return musics.toMetadataList();

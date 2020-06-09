@@ -80,7 +80,7 @@ class _ItemTitle extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         payload.title,
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: Theme.of(context).textTheme.subtitle,
                       ),
                       Text(
                         payload.subtitle,
@@ -187,7 +187,8 @@ class _ItemCommentState extends State<_ItemComment> {
                   ListTile(
                     title: Text("复制"),
                     onTap: () {
-                      Clipboard.setData(ClipboardData(text: widget.comment.content));
+                      Clipboard.setData(
+                          ClipboardData(text: widget.comment.content));
                       Navigator.pop(context);
                       toast('复制成功');
                     },
@@ -213,7 +214,10 @@ class _ItemCommentState extends State<_ItemComment> {
                       child: InkResponse(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => UserDetailPage(userId: user.userId)));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  UserDetailPage(userId: user.userId)));
                     },
                     child: Image(
                       image: CachedImage(user.avatarUrl),
@@ -229,7 +233,7 @@ class _ItemCommentState extends State<_ItemComment> {
                     children: <Widget>[
                       Text(
                         user.nickname,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.body2,
                       ),
                       Text(
                         getFormattedTime(widget.comment.time),
@@ -254,7 +258,9 @@ class _ItemCommentState extends State<_ItemComment> {
                         child: Icon(
                           Icons.thumb_up,
                           size: 15,
-                          color: widget.comment.liked ? Theme.of(context).accentColor : Theme.of(context).disabledColor,
+                          color: widget.comment.liked
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).disabledColor,
                         ),
                       )
                     ],

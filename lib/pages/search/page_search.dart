@@ -8,7 +8,8 @@ import 'search_result_page.dart';
 import 'search_suggestion.dart';
 
 class NeteaseSearchPageRoute<T> extends PageRoute<T> {
-  NeteaseSearchPageRoute(this._proxyAnimation) : super(settings: RouteSettings(name: pageSearch));
+  NeteaseSearchPageRoute(this._proxyAnimation)
+      : super(settings: RouteSettings(name: pageSearch));
 
   final ProxyAnimation _proxyAnimation;
 
@@ -59,7 +60,8 @@ class NeteaseSearchPageRoute<T> extends PageRoute<T> {
 class NeteaseSearchPage extends StatefulWidget {
   final Animation<double> animation;
 
-  const NeteaseSearchPage({Key key, @required this.animation}) : super(key: key);
+  const NeteaseSearchPage({Key key, @required this.animation})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -130,24 +132,29 @@ class _NeteaseSearchPageState extends State<NeteaseSearchPage> {
                 title: TextField(
                   controller: _queryTextController,
                   focusNode: _focusNode,
-                  style: theme.primaryTextTheme.headline6,
+                  style: theme.primaryTextTheme.headline,
                   textInputAction: TextInputAction.search,
                   onSubmitted: (String _) => _search(query),
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintStyle: theme.primaryTextTheme.headline6,
-                      hintText: MaterialLocalizations.of(context).searchFieldLabel),
+                      hintStyle: theme.primaryTextTheme.headline,
+                      hintText:
+                          MaterialLocalizations.of(context).searchFieldLabel),
                 ),
                 actions: buildActions(context),
                 bottom: tabs,
               ),
               resizeToAvoidBottomInset: false,
               body: BoxWithBottomPlayerController(initialState
-                  ? _EmptyQuerySuggestionSection(suggestionSelectedCallback: (query) => _search(query))
+                  ? _EmptyQuerySuggestionSection(
+                      suggestionSelectedCallback: (query) => _search(query))
                   : SearchResultPage(query: _searchedQuery)),
             ),
           ),
-          SafeArea(child: Padding(padding: EdgeInsets.only(top: kToolbarHeight), child: buildSuggestions(context)))
+          SafeArea(
+              child: Padding(
+                  padding: EdgeInsets.only(top: kToolbarHeight),
+                  child: buildSuggestions(context)))
         ],
       ),
     );
@@ -201,7 +208,9 @@ class _NeteaseSearchPageState extends State<NeteaseSearchPage> {
   }
 
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty || !isSoftKeyboardDisplay(MediaQuery.of(context)) || !_focusNode.hasFocus) {
+    if (query.isEmpty ||
+        !isSoftKeyboardDisplay(MediaQuery.of(context)) ||
+        !_focusNode.hasFocus) {
       return Container(height: 0, width: 0);
     }
     return SuggestionOverflow(
@@ -218,7 +227,8 @@ class _NeteaseSearchPageState extends State<NeteaseSearchPage> {
 ///with hot query keyword from network
 ///with query history from local
 class _EmptyQuerySuggestionSection extends StatelessWidget {
-  _EmptyQuerySuggestionSection({Key key, @required this.suggestionSelectedCallback})
+  _EmptyQuerySuggestionSection(
+      {Key key, @required this.suggestionSelectedCallback})
       : assert(suggestionSelectedCallback != null),
         super(key: key);
 

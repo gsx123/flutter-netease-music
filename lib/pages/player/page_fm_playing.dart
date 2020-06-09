@@ -64,8 +64,10 @@ class _CenterSectionState extends State<_CenterSection> {
   Widget build(BuildContext context) {
     return Expanded(
       child: AnimatedCrossFade(
-        crossFadeState: _showLyric ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-        layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild, Key bottomChildKey) {
+        crossFadeState:
+            _showLyric ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild,
+            Key bottomChildKey) {
           return Stack(
             overflow: Overflow.visible,
             children: <Widget>[
@@ -129,7 +131,7 @@ class _FmCover extends StatelessWidget {
         ),
         Text(
           music.title ?? "",
-          style: Theme.of(context).primaryTextTheme.subtitle1,
+          style: Theme.of(context).primaryTextTheme.subtitle,
         ),
         SizedBox(height: 8),
         InkWell(
@@ -143,12 +145,17 @@ class _FmCover extends StatelessWidget {
                 constraints: BoxConstraints(maxWidth: 200),
                 child: Text(
                   music.artistString,
-                  style: Theme.of(context).primaryTextTheme.caption.copyWith(fontSize: 13),
+                  style: Theme.of(context)
+                      .primaryTextTheme
+                      .caption
+                      .copyWith(fontSize: 13),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Icon(Icons.chevron_right, size: 17, color: Theme.of(context).primaryTextTheme.caption.color),
+              Icon(Icons.chevron_right,
+                  size: 17,
+                  color: Theme.of(context).primaryTextTheme.caption.color),
             ],
           ),
         )
@@ -187,7 +194,8 @@ class _FmControllerBar extends StatelessWidget {
         height: 56,
         width: 56,
         child: Center(
-          child: Container(height: 24, width: 24, child: CircularProgressIndicator()),
+          child: Container(
+              height: 24, width: 24, child: CircularProgressIndicator()),
         ),
       ),
     );
@@ -229,7 +237,8 @@ class _FmControllerBar extends StatelessWidget {
                           threadId: CommentThreadId(
                             context.player.value.current.id,
                             CommentType.song,
-                            payload: CommentThreadPayload.music(context.player.value.current),
+                            payload: CommentThreadPayload.music(
+                                context.player.value.current),
                           ),
                         )));
               }),

@@ -4,13 +4,15 @@ import 'package:quiet/pages/playlist/music_list.dart';
 import 'package:quiet/pages/playlist/page_playlist_detail.dart';
 import 'package:quiet/part/part.dart';
 import 'package:quiet/repository/netease.dart';
+import 'package:quiet/repository/ted.dart';
 
 class MainCloudPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => CloudPageState();
 }
 
-class CloudPageState extends State<MainCloudPage> with AutomaticKeepAliveClientMixin {
+class CloudPageState extends State<MainCloudPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -42,7 +44,8 @@ class _NavigationLine extends StatelessWidget {
               context.secondaryNavigator.pushNamed(pageFmPlaying);
               return;
             }
-            showLoaderOverlay(context, neteaseRepository.getPersonalFmMusics()).then((musics) {
+            showLoaderOverlay(context, neteaseRepository.getPersonalFmMusics())
+                .then((musics) {
               context.player.playFm(musics);
               context.secondaryNavigator.pushNamed(pageFmPlaying);
             }).catchError((error, stacktrace) {
@@ -77,7 +80,10 @@ class _Header extends StatelessWidget {
           Padding(padding: EdgeInsets.only(left: 8)),
           Text(
             text,
-            style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w800),
+            style: Theme.of(context)
+                .textTheme
+                .subtitle
+                .copyWith(fontWeight: FontWeight.w800),
           ),
           Icon(Icons.chevron_right),
         ],
@@ -136,13 +142,15 @@ class _SectionPlaylist extends StatelessWidget {
       builder: (context, result) {
         List<Map> list = (result["result"] as List).cast();
         return LayoutBuilder(builder: (context, constraints) {
-          assert(constraints.maxWidth.isFinite, "can not layout playlist item in infinite width container.");
+          assert(constraints.maxWidth.isFinite,
+              "can not layout playlist item in infinite width container.");
           final parentWidth = constraints.maxWidth - 8;
           int count = /* false ? 6 : */ 3;
           double width = (parentWidth ~/ count).toDouble().clamp(80.0, 200.0);
           double spacing = (parentWidth - width * count) / (count + 1);
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4 + spacing.roundToDouble()),
+            padding:
+                EdgeInsets.symmetric(horizontal: 4 + spacing.roundToDouble()),
             child: Wrap(
               spacing: spacing,
               direction: Axis.horizontal,
@@ -181,7 +189,7 @@ class _PlayListItemView extends StatelessWidget {
               return AlertDialog(
                 content: Text(
                   playlist["copywriter"],
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.body1,
                 ),
               );
             });
@@ -236,12 +244,37 @@ class _SectionNewSongs extends StatelessWidget {
     return mapJsonToMusic(song);
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget build_(BuildContext context) {
     return Loader<Map>(
       loadTask: () => neteaseRepository.personalizedNewSong(),
       builder: (context, result) {
-        List<Music> songs = (result["result"] as List).cast<Map>().map(_mapJsonToMusic).toList();
+        List<Music> songs = (result["result"] as List)
+            .cast<Map>()
+            .map(_mapJsonToMusic)
+            .toList();
+        return MusicTileConfiguration(
+          musics: songs,
+          token: 'playlist_main_newsong',
+          onMusicTap: MusicTileConfiguration.defaultOnTap,
+          leadingBuilder: MusicTileConfiguration.indexedLeadingBuilder,
+          trailingBuilder: MusicTileConfiguration.defaultTrailingBuilder,
+          child: Column(
+            children: songs.map((m) => MusicTile(m)).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Loader<Map>(
+      loadTask: () => tedRepository.getTalks(),
+      builder: (context, result) {
+        List<Music> songs = (result["result"] as List)
+            .cast<Map>()
+            .map(tedRepository.mapJsonToMusic)
+            .toList();
         return MusicTileConfiguration(
           musics: songs,
           token: 'playlist_main_newsong',

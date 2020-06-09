@@ -4,6 +4,7 @@ import 'package:music_player/music_player.dart';
 import 'package:quiet/pages/player/lyric.dart';
 import 'package:quiet/part/part.dart';
 import 'package:quiet/repository/netease.dart';
+import 'package:quiet/repository/ted.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 ///当前播放中的音乐的歌词
@@ -15,7 +16,8 @@ class PlayingLyric extends Model {
   }
 
   static PlayingLyric of(BuildContext context, {rebuildOnChange: true}) {
-    return ScopedModel.of<PlayingLyric>(context, rebuildOnChange: rebuildOnChange);
+    return ScopedModel.of<PlayingLyric>(context,
+        rebuildOnChange: rebuildOnChange);
   }
 
   CancelableOperation _lyricLoader;
@@ -44,12 +46,14 @@ class PlayingLyric extends Model {
       _setLyric();
       return;
     }
-    _lyricLoader = CancelableOperation<String>.fromFuture(neteaseRepository.lyric(music.id))
-      ..value.then((lyric) {
-        _setLyric(lyric: lyric);
-      }, onError: (e) {
-        _setLyric(message: e.toString());
-      });
+    // _lyricLoader = CancelableOperation<String>.fromFuture(neteaseRepository.lyric(music.id))
+    _lyricLoader =
+        CancelableOperation<String>.fromFuture(tedRepository.lyric(music.id))
+          ..value.then((lyric) {
+            _setLyric(lyric: lyric);
+          }, onError: (e) {
+            _setLyric(message: e.toString());
+          });
   }
 
   void _setLyric({String lyric, String message}) {
